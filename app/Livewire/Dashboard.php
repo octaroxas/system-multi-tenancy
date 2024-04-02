@@ -22,14 +22,15 @@ class Dashboard extends Component
         'question' => 'required|min:10'
     ];
 
-    public function generateReport() {
+    public function generateReport()
+    {
 
         $this->validate();
 
-        $fields = implode(',',SalesCommission::getColumns());
+        $fields = implode(',', SalesCommission::getColumns());
 
         $this->config =  OpenAI::completions()->create([
-            'model' => 'text-davinci-003',
+            'model' => 'gpt-3.5-turbo-instruct',
             'prompt' => "Considerando a lista de campos ($fields), gere uma configuração json do Vega-lite v5 (sem campo de dados e com descrição) que atenda o seguinte pedido {$this->question}. Resposta:",
             'max_tokens' => 1500
         ])->choices[0]->text;
